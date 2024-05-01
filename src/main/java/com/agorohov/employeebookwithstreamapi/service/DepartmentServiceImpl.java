@@ -21,9 +21,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public int getSumMonthSalaries(int departmentId) {
-        if (employeeService.findAllEmployees().isEmpty()) {
-            throw new EmployeeNotFoundException("Нет ни одного сотрудника в отделе " + departmentId);
-        }
         return employeeService
                 .findAllEmployees()
                 .stream()
@@ -78,11 +75,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Map<Integer, List<Employee>> findAllEmployees() {
-        Map<Integer, List<Employee>> result = employeeService.findAllEmployees().stream()
+        return employeeService.findAllEmployees().stream()
                 .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.toList()));
-//        if (result.isEmpty()) {
-//            throw new EmployeeNotFoundException("Нет ни одного сотрудника");
-//        }
-        return result;
     }
 }
