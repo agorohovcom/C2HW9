@@ -25,7 +25,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Collection<Employee> findAllEmployees() {
-        return Collections.unmodifiableCollection(employees.values());
+        Collection<Employee> result = Collections.unmodifiableCollection(employees.values());
+        if (result.isEmpty()) {
+            throw new EmployeeNotFoundException("Нет ни одного сотрудника");
+        }
+        return result;
     }
 
     @Override
@@ -52,54 +56,5 @@ public class EmployeeServiceImpl implements EmployeeService {
         return Optional.ofNullable(employees.get(getFullName(firstName, lastName)))
                 .orElseThrow(() -> new EmployeeNotFoundException(
                         "Нет сотрудника с именем " + firstName + " и фамилией " + lastName));
-    }
-
-    @Override
-    public double getSumMonthSalaries() {
-        if (employees.isEmpty()) {
-            throw new EmployeeNotFoundException("Нет ни одного сотрудника");
-        }
-        double monthSalaries = 0;
-        for (Map.Entry<String, Employee> e : employees.entrySet()) {
-            monthSalaries += e.getValue().getSalary();
-        }
-        return monthSalaries;
-    }
-
-    @Override
-    public Employee getEmployeeWithMinSalary() {
-        Employee empWithMinSalary = null;
-        double minSalary = Double.MAX_VALUE;
-        for (Map.Entry<String, Employee> e : employees.entrySet()) {
-            if (e.getValue().getSalary() < minSalary) {
-                minSalary = e.getValue().getSalary();
-                empWithMinSalary = e.getValue();
-            }
-        }
-        if (empWithMinSalary == null) {
-            throw new EmployeeNotFoundException("Нет ни одного сотрудника");
-        }
-        return empWithMinSalary;
-    }
-
-    @Override
-    public Employee getEmployeeWithMaxSalary() {
-        Employee empWithMaxSalary = null;
-        double maxSalary = Double.MIN_VALUE;
-        for (Map.Entry<String, Employee> e : employees.entrySet()) {
-            if (e.getValue().getSalary() > maxSalary) {
-                maxSalary = e.getValue().getSalary();
-                empWithMaxSalary = e.getValue();
-            }
-        }
-        if (empWithMaxSalary == null) {
-            throw new EmployeeNotFoundException("Нет ни одного сотрудника");
-        }
-        return empWithMaxSalary;
-    }
-
-    @Override
-    public double getAverageMonthSalary() {
-        return getSumMonthSalaries() / employees.size();
     }
 }

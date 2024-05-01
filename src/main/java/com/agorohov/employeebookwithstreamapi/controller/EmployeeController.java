@@ -44,30 +44,10 @@ public class EmployeeController {
         return employeeService.findEmployee(firstName, lastName);
     }
 
-    @GetMapping(value = "getMonthSalaries")
-    public String getMonthSalaries() {
-        return "Сумма зарплат всех сотрудников за месяц составляет " + employeeService.getSumMonthSalaries();
-    }
-
-    @GetMapping(value = "/minSalary")
-    public Employee getEmployeeWithMinSalary() {
-        return employeeService.getEmployeeWithMinSalary();
-    }
-
-    @GetMapping(value = "/maxSalary")
-    public Employee getEmployeeWithMaxSalary() {
-        return employeeService.getEmployeeWithMaxSalary();
-    }
-
-    @GetMapping(value = "/avgSalary")
-    public String getAverageSalary() {
-        return "Средняя месячная ЗП среди всех сотрудников: " + employeeService.getAverageMonthSalary();
-    }
-
     // Перехват указанных исключений с целью вывода в браузер сообщений из исключений
     // Перекрывает @ResponseStatus
     @ExceptionHandler({EmployeeAlreadyAddedException.class, EmployeeNotFoundException.class})
-    public String handleEmployeeNotFoundException(RuntimeException e) {
+    public String handleEmployeeExceptions(RuntimeException e) {
         e.printStackTrace();
         return e.getMessage();
     }
