@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
@@ -77,6 +78,11 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Map<Integer, List<Employee>> findAllEmployees() {
-        return null;
+        Map<Integer, List<Employee>> result = employeeService.findAllEmployees().stream()
+                .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.toList()));
+//        if (result.isEmpty()) {
+//            throw new EmployeeNotFoundException("Нет ни одного сотрудника");
+//        }
+        return result;
     }
 }

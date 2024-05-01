@@ -27,7 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Collection<Employee> findAllEmployees() {
         Collection<Employee> result = Collections.unmodifiableCollection(employees.values());
         if (result.isEmpty()) {
-            throw new EmployeeNotFoundException("Нет ни одного сотрудника");
+            throw new EmployeeNotFoundException("Нет сотрудников");
         }
         return result;
     }
@@ -36,7 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee addEmployee(String firstName, String lastName, int salary, int department) {
         Employee employee = new Employee(firstName, lastName, salary, department);
         if (employees.containsKey(getFullName(employee))) {
-            throw new EmployeeAlreadyAddedException(employee + " уже существует, добавление невозможно");
+            throw new EmployeeAlreadyAddedException("Сотрудник с именем " + firstName + " и фамилией " + lastName + "уже есть, повторное добавление невозможно");
         }
         employees.put(getFullName(employee), employee);
         return employee;

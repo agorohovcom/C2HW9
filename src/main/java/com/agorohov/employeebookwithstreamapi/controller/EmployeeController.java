@@ -7,8 +7,6 @@ import com.agorohov.employeebookwithstreamapi.service.EmployeeService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-
 @RestController()
 @RequestMapping(value = "/employee", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EmployeeController {
@@ -17,11 +15,6 @@ public class EmployeeController {
 
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
-    }
-
-    @GetMapping()
-    public Collection<Employee> findAllEmployees() {
-        return employeeService.findAllEmployees();
     }
 
     @GetMapping("/add")
