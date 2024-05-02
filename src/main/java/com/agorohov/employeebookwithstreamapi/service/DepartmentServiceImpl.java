@@ -26,7 +26,8 @@ public class DepartmentServiceImpl implements DepartmentService {
                 .stream()
                 .filter(d -> d.getDepartment() == departmentId)
                 .mapToInt(Employee::getSalary)
-                .sum();
+                .reduce(Integer::sum)
+                .orElseThrow(() -> new EmployeeNotFoundException("Нет ни одного сотрудника в отделе " + departmentId));
     }
 
     @Override
