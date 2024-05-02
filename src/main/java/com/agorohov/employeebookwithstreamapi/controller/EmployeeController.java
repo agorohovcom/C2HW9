@@ -7,8 +7,6 @@ import com.agorohov.employeebookwithstreamapi.service.EmployeeService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
-
 @RestController()
 @RequestMapping(value = "/employee", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EmployeeController {
@@ -21,8 +19,10 @@ public class EmployeeController {
 
     @GetMapping("/add")
     public Employee addEmployee(@RequestParam String firstName,
-                                @RequestParam String lastName) {
-        return employeeService.addEmployee(firstName, lastName);
+                                @RequestParam String lastName,
+                                @RequestParam int salary,
+                                @RequestParam int department) {
+        return employeeService.addEmployee(firstName, lastName, salary, department);
     }
 
     @GetMapping("/remove")
@@ -37,15 +37,10 @@ public class EmployeeController {
         return employeeService.findEmployee(firstName, lastName);
     }
 
-    @GetMapping()
-    public Collection<Employee> findAllEmployees() {
-        return employeeService.findAllEmployees();
-    }
-
     // Перехват указанных исключений с целью вывода в браузер сообщений из исключений
     // Перекрывает @ResponseStatus
     @ExceptionHandler({EmployeeAlreadyAddedException.class, EmployeeNotFoundException.class})
-    public String handleEmployeeNotFoundException(RuntimeException e) {
+    public String handleEmployeeExceptions(RuntimeException e) {
         e.printStackTrace();
         return e.getMessage();
     }
